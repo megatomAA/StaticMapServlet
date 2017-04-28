@@ -1,4 +1,4 @@
-package fr.aareon.osm;
+package fr.aareon.map;
 
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -48,6 +48,9 @@ public class StaticMapServlet extends HttpServlet {
 		String coord = request.getParameter("coord");
 		String zoom = request.getParameter("zoom");
 		String markers = request.getParameter("markers");
+        String apikey = request.getParameter("apikey");
+        String cache = request.getParameter("cache");
+        String cleanCache = request.getParameter("cleanCache");
 		
 		StaticMap map = new StaticMap();
 		map.setAddress(address);
@@ -66,6 +69,16 @@ public class StaticMapServlet extends HttpServlet {
 			String[] coords = coord.split(",");
 			map.setCoord(new Coords(Float.parseFloat(coords[0]), Float.parseFloat(coords[1])));
 		}
+		if (apikey != null) {
+		    map.setApiKey(apikey);
+		}
+        if (cache != null) {
+            map.setUseMapCache(Boolean.valueOf(cache));
+            map.setUseTileCache(Boolean.valueOf(cache));
+        }
+        if (cleanCache != null) {
+            map.cleanCache();
+        }
 		
 		if (markers != null) {
 			String[] aMarkers = markers.split("\\|");
